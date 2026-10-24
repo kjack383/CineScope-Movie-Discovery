@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CineScope helps you discover movies, explore genres, read details, and save a personal watchlist.">
+  <title>CineScope — Movie Discovery</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <a class="brand" href="#" id="brand-home" aria-label="CineScope home"><span class="brand-mark" aria-hidden="true">▶</span> CineScope</a>
+    <nav aria-label="Main navigation">
+      <button class="nav-link active" type="button" data-view="discover">Discover</button>
+      <button class="nav-link" type="button" data-view="favorites">My Watchlist <span id="watchlist-count" class="count">0</span></button>
+    </nav>
+    <button id="settings-open" class="settings-button" type="button" aria-haspopup="dialog">API settings</button>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow">YOUR NEXT FAVORITE FILM STARTS HERE</p>
+        <h1 id="hero-title">Find a movie<br><span>worth watching.</span></h1>
+        <p class="hero-description">Explore popular movies, discover a new genre, and keep your must-watch list in one place.</p>
+        <form id="search-form" class="search-form" role="search">
+          <label class="sr-only" for="search-input">Search movies by title</label>
+          <span aria-hidden="true" class="search-symbol">⌕</span>
+          <input id="search-input" name="query" type="search" placeholder="Search movies..." autocomplete="off">
+          <button type="submit">Search</button>
+          <ul id="suggestions" class="suggestions" role="listbox" aria-label="Movie suggestions" hidden></ul>
+        </form>
+        <p id="api-hint" class="api-hint">Add your TMDB API key in API settings to load live movie data.</p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="poster-stack stack-back"></div><div class="poster-stack stack-mid"></div>
+        <div class="poster-stack stack-front"><span>THE<br>NEXT<br>BIG<br>THING</span><small>DISCOVER SOMETHING NEW</small></div>
+        <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div>
+      </div>
+    </section>
+
+    <section class="toolbar" aria-label="Movie discovery controls">
+      <div>
+        <label for="genre-select">Genre</label>
+        <select id="genre-select"><option value="">All genres</option></select>
+      </div>
+      <div>
+        <label for="sort-select">Sort by</label>
+        <select id="sort-select">
+          <option value="popularity.desc">Most popular</option>
+          <option value="vote_average.desc">Highest rated</option>
+          <option value="release_date.desc">Newest releases</option>
+          <option value="title.asc">Title A–Z</option>
+        </select>
+      </div>
+      <p id="result-summary" aria-live="polite">Popular picks for your next movie night.</p>
+    </section>
+
+    <section id="status-region" aria-live="polite" aria-atomic="true"></section>
+    <section id="movie-section" aria-labelledby="section-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">CURATED FOR YOU</p><h2 id="section-title">Popular right now</h2></div>
+        <span class="section-note">A world of stories awaits.</span>
+      </div>
+      <div id="movie-grid" class="movie-grid"></div>
+      <div id="pagination" class="pagination" hidden>
+        <button type="button" id="prev-page">Previous</button>
+        <span id="page-label">Page 1</span>
+        <button type="button" id="next-page">Next</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <a class="brand footer-brand" href="#" aria-label="CineScope home">▶ CineScope</a>
+    <p>Movie information provided by TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+    <p>Built as an IT 4403 Single Page Application project.</p>
+  </footer>
+
+  <dialog id="settings-dialog" aria-labelledby="settings-title">
+    <form method="dialog" id="settings-form" class="dialog-content">
+      <button class="dialog-close" value="cancel" aria-label="Close settings">×</button>
+      <p class="eyebrow">CONNECT MOVIE DATA</p><h2 id="settings-title">TMDB API settings</h2>
+      <p>Enter your TMDB API Read Access Token (Bearer token) or API key. The token is kept in this browser session and is not included in the source code.</p>
+      <label for="api-token">API Read Access Token</label>
+      <input id="api-token" type="password" autocomplete="off" placeholder="Paste your TMDB token">
+      <label for="api-key">Or API Key (v3)</label>
+      <input id="api-key" type="password" autocomplete="off" placeholder="Optional if using a read access token">
+      <p class="small-note">Get credentials from your TMDB account's API settings. Never commit personal credentials to a public repository.</p>
+      <div class="dialog-actions"><button type="button" class="button-secondary" id="clear-credentials">Clear</button><button type="submit" id="save-credentials">Save and connect</button></div>
+      <p id="settings-message" class="form-message" role="status"></p>
+    </form>
+  </dialog>
+
+  <dialog id="details-dialog" aria-labelledby="details-title">
+    <div id="details-content" class="details-content">
+      <button class="dialog-close" id="details-close" type="button" aria-label="Close movie details">×</button>
+      <div class="details-loading">Select a movie to see details.</div>
+    </div>
+  </dialog>
+</body>
+</html>
